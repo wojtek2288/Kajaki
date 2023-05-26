@@ -16,13 +16,14 @@ public class Graph
     public Dictionary<(int v1, int v2), int> EdgeDictionary { get; private set; }
 
     private int edgeIdx = 0;
+
     public Graph(int v) 
     {
         V = v;
         AdjacencyList = new List<int>[v];
         for (int i = 0; i < V; i++) 
             AdjacencyList[i] = new List<int> { };
-        ActiveVertex = new bool[V];
+        ActiveVertex = Enumerable.Repeat(true, V).ToArray();
         EdgeDictionary = new Dictionary<(int v1, int v2), int>(comparer: new EdgeComparer());
     }
 
@@ -87,9 +88,10 @@ public class Graph
         return FromAdjacenctMatrix(adjacencyMatrix);
     }
 
-    public Graph GetLineGraph()
+    public Graph GetLineGraph(out Dictionary<int, (int, int)> vertices)
     {
         var graph = new Graph(edgeIdx);
+        vertices = new();
 
         for (int v = 0; v < V; ++v)
         {
@@ -103,10 +105,68 @@ public class Graph
 
                     int uwId = EdgeDictionary[(w, u)];
                     graph.AddEdge(vuId, uwId);
+
+                    vertices.TryAdd(vuId, (v, u));
+                    vertices.TryAdd(uwId, (w, u));
                 }
             }
         }
 
         return graph;
+    }
+
+    private bool DFS(int[][] graph, int u, bool[] visited, int[] match)
+    {
+        visited[u] = true;
+
+        foreach (var v in graph[u])
+        {
+            if (!visited[v])
+            {
+                visited[v] = true;
+
+                if (match[v] == -1 || DFS(graph, match[v], visited, match))
+                {
+                    match[u] = v;
+                    match[v] = u;
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public List<(int vertice1, int vertice2)> FindMaxMatching()
+    {
+        int n = V;
+        var graph = new int[n][];
+
+        for (int i = 0; i < n; i++)
+        {
+            graph[i] = AdjacencyList[i].ToArray();
+        }
+
+        int[] match = new int[n];
+        for (var i = 0; i < n; i++)
+        {
+            match[i] = -1;
+        }
+
+        var maxMatching = new List<(int, int)>();
+
+        for (var u = 0; u < n; u++)
+        {
+            if (match[u] == -1)
+            {
+                bool[] visited = new bool[n];
+                if (DFS(graph, u, visited, match))
+                {
+                    maxMatching.Add((u, match[u]));
+                }
+            }
+        }
+
+        return maxMatching;
     }
 }
