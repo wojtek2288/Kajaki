@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Generator\Generator.csproj" />
     <ProjectReference Include="..\Kajaki\Kajaki.csproj" />
   </ItemGroup>
 

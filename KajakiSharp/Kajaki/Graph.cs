@@ -105,12 +105,11 @@ public class Graph
 
                     int uwId = EdgeDictionary[(w, u)];
                     graph.AddEdge(vuId, uwId);
-
-                    vertices.TryAdd(vuId, (v, u));
-                    vertices.TryAdd(uwId, (w, u));
                 }
             }
         }
+
+        vertices = EdgeDictionary.ToDictionary(x => x.Value, x => x.Key);
 
         return graph;
     }
@@ -160,13 +159,18 @@ public class Graph
             if (match[u] == -1)
             {
                 bool[] visited = new bool[n];
-                if (DFS(graph, u, visited, match))
-                {
-                    maxMatching.Add((u, match[u]));
-                }
+                DFS(graph, u, visited, match);
             }
         }
 
-        return maxMatching;
+        var edgesSet = new HashSet<(int v1, int v2)>(comparer: new EdgeComparer());
+
+        for (var i = 0; i < match.Length; i++)
+        {
+            if (match[i] != -1)
+                edgesSet.Add((i, match[i]));
+        }
+
+        return edgesSet.ToList();
     }
 }

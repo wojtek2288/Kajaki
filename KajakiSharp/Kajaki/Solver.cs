@@ -10,7 +10,7 @@ public static class Solver
 {
     public static List<((int, int) pair1, (int, int)? pair2)> Solve(Graph graph)
     {
-        var resultBeforeMapping = new List<((int, int) pair1, (int, int)? pair2)>();
+        var result = new List<((int, int) pair1, (int, int)? pair2)>();
 
         var lineGraph = graph.GetLineGraph(out var originVertices);
         var complementGraph = lineGraph.GetComplementGraph();
@@ -24,7 +24,7 @@ public static class Solver
             complementGraph.RemoveVertex(matching.vertice1);
             complementGraph.RemoveVertex(matching.vertice2);
 
-            resultBeforeMapping.Add((pair1, pair2));
+            result.Add((pair1, pair2));
         }
 
         for (int v = 0; v < complementGraph.V; ++v)
@@ -33,20 +33,8 @@ public static class Solver
             {
                 var pair = originVertices[v];
 
-                resultBeforeMapping.Add(((pair), null));
+                result.Add(((pair), null));
             }
-        }
-
-        var result = new List<((int, int) pair1, (int, int)? pair2)>();
-
-        foreach (var kayak in resultBeforeMapping)
-        {
-            var pair1 = (kayak.pair1.Item1 + 1, kayak.pair1.Item2 + 1);
-            var pair2 = kayak.pair2 != null
-                ? ((int, int)?)(kayak.pair2.Value.Item1 + 1, kayak.pair2.Value.Item2 + 1)
-                : null;
-
-            result.Add((pair1, pair2));
         }
 
         return result;

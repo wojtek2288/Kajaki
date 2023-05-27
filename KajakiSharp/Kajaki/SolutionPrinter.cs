@@ -23,11 +23,11 @@ public class SolutionPrinter
     {
         foreach (var pairs in solution)
         {
-            writer.Write($"{pairs.pair1.Item1} {pairs.pair1.Item2}, ");
+            writer.Write($"{pairs.pair1.Item1,2} {pairs.pair1.Item2,2}, ");
             if (pairs.pair2 != null)
-                writer.WriteLine($"{pairs.pair2?.Item1} {pairs.pair2?.Item2}");
+                writer.WriteLine($"{pairs.pair2?.Item1,2} {pairs.pair2?.Item2,2}");
             else
-                writer.WriteLine("- -");
+                writer.WriteLine($"{"-",2} {"-",2}");
         }
     }
 }
