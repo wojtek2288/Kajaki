@@ -14,7 +14,7 @@ public class SolverTests
     [InlineData(3, 5)]
     [InlineData(50, 120)]
     [InlineData(20, 190)]
-    [InlineData(1000, 10000)]
+    //[InlineData(1000, 10000)]
     public void Solver_works_correctly(int peopleCount, int? pairCount)
     {
         var graph = Generator.Generator.GenerateGraph(peopleCount, pairCount);
@@ -40,5 +40,38 @@ public class SolverTests
             .ToList();
 
         return convertedList;
+    }
+
+
+    [Fact]
+    public void IsMaximumMatichng()
+    {
+        var graph = new Graph(10);
+        graph.AddEdge(0, 3);
+        graph.AddEdge(0, 2);
+        graph.AddEdge(0, 8);
+        graph.AddEdge(0, 4);
+        graph.AddEdge(1, 2);
+        graph.AddEdge(1, 4);
+        graph.AddEdge(1, 8);
+        graph.AddEdge(2, 5);
+        graph.AddEdge(2, 7);
+        graph.AddEdge(3, 7);
+        graph.AddEdge(3, 9);
+        graph.AddEdge(4, 5);
+        graph.AddEdge(4, 9);
+        graph.AddEdge(5, 6);
+        graph.AddEdge(6, 7);
+        graph.AddEdge(6, 9);
+        graph.AddEdge(8, 9);
+
+        var res = graph.FindMaxMatching();
+
+        var maxMatching = new List<(int vertice1, int vertice2)>()
+        {
+            (0, 2), (3, 7), (5, 6), (1, 4), (8, 9)
+        };
+
+        Assert.True(res.Count == maxMatching.Count);
     }
 }

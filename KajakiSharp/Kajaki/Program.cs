@@ -11,7 +11,7 @@ internal class Program
             return;
         }
 
-        var filename = "C:\\Users\\User\\Documents\\Studia\\kajaki\\Kajaki\\KajakiSharp\\Kajaki\\test.txt"; // args.Length > 0 ? args[0] : null;
+        var filename = args.Length > 0 ? args[0] : null;
         var outFilename = args.Length > 1 ? args[1] : null;
 
         var graph = GraphLoader.GetGraph(filename);
