@@ -1,5 +1,4 @@
-﻿using Kajaki;
-using System.IO;
+﻿using System.IO;
 
 namespace Generator;
 
@@ -43,29 +42,6 @@ public static class Generator
             foreach (var pair in pairs)
                 sw.WriteLine($"{pair.p1} {pair.p2}");
         }
-    }
-
-    public static Graph GenerateGraph(int peopleCount, int? pairCount)
-    {
-        var random = new Random();
-
-        var maxPairs = peopleCount * (peopleCount - 1) / 2;
-
-        if (!pairCount.HasValue)
-            pairCount = random.Next(maxPairs) + 1;
-
-        var selectedPairs = Enumerable.Range(1, maxPairs).OrderBy(num => random.Next()).Take(pairCount.Value);
-
-        var pairs = selectedPairs.Select(num => ConvertPairIdToPair(num, peopleCount));
-
-        var graph = new Graph(peopleCount);
-
-        foreach (var pair in pairs)
-        {
-            graph.AddEdge(pair.p1 - 1, pair.p2 - 1);
-        }
-
-        return graph;
     }
 
     public static (int p1, int p2) ConvertPairIdToPair(int id, int peopleCount)

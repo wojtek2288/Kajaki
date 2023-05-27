@@ -20,7 +20,7 @@ public class SolverTests
     [InlineData(1000, 2000)]
     public void Solver_works_correctly(int peopleCount, int? pairCount)
     {
-        var graph = Generator.Generator.GenerateGraph(peopleCount, pairCount);
+        var graph = GraphGenerator.Generate(peopleCount, pairCount);
 
         var res = Solver.Solve(graph);
         var convertedRes = ConvertAndSkipNulls(res);
